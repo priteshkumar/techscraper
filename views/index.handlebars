@@ -1,0 +1,62 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/home">Home</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="/scrape">Techpulse<span class="sr-only">(current)</span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Gadgets</a></li>
+            <li><a href="#">Enterprise</a></li>
+            <li><a href="#">Social</a></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/about">About Technews</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+<div class="container-fluid">
+    <img class="img-responsive" id="headimg" src="/assets/img/tech7.jpg">
+</div>
+  <div class="container-fluid">      
+    <div class="row">
+      <div class="col-xs-8 col-xs-offset-2">
+      <ul class="media-list">
+        {{#each newsitems}}
+        <li class="media">
+        <div class="media-left media-middle">
+          <a href="{{this.url}}">
+          <img class="media-object" src="{{this.imageUrl}}">
+          </a>
+        </div>
+    <div class="media-body">
+      <h4 class="media-heading"><a href="{{this.url}}">{{this.title}}</a></h4>
+      <p>{{this.info}}</p>
+      <p>Posted at: {{this.postedTime}} by <a href="{{this.authorlink}}">{{this.authorName}}</a></p>
+    </div>
+    </li>
+  {{/each}}
+</ul>
+</div>
+</div>
+</div>
+<footer class="footer">
+  <div class="container text-center">
+    <p>Copyright@2017</p>
+  </div>
+</footer>
