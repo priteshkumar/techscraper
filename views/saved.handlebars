@@ -33,16 +33,47 @@
 <div class="container-fluid">
     <img class="img-responsive" id="headimg" src="/assets/img/tech7.jpg">
 </div>
+<div class="container">
+  <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="commentsModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title text-center" id="gridSystemModalLabel">Comments</h3>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-xs-12" id="commentdiv">
+          <ul id="commentlist">
+          </ul>
+          <form role="form" id="commentform">
+          <div class="form-group">
+          <label for="commentsection"></label>
+          <input type="textarea" class="form-control" placeholder="Add comments..">
+          </div>
+        <div class="text-center" id="submitdiv">
+          <button type="submit" class="btn btn-secondary btn-sm submit" id="submitbtn">Submit</button>
+        </div>
+      </form>
+ 
+          </div>
+        </div>
+        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+</div>
+</div>
+
   <div class="container-fluid">      
     <div class="row">
       <div class="col-xs-8 col-xs-offset-2">
       <ul class="media-list">
         {{#each newsitems}}
-        <li class="media" data-url="{{this.url}}" data-imageurl="{{this.imageUrl}}"
-                         data-title="{{this.title}}" data-info="{{this.info}}" 
-                         data-postedtime="{{this.postedTime}}" 
-                         data-authorlink="{{this.authorlink}}" 
-                         data-authorname="{{this.authorName}}">
+        <li class="media">
         <div class="media-left media-middle">
           <a href="{{this.url}}">
           <img class="media-object" src="{{this.imageUrl}}">
@@ -53,7 +84,8 @@
       <p>{{this.info}}</p>
       <p>Posted at: {{this.postedTime}} by <a href="{{this.authorlink}}">{{this.authorName}}</a></p>
       <div class="pull-right btndiv">
-      <button type="button" class="btn btn-info savebtn" data-id="{{this.id}}">Save</button>
+      <button type="button" class="btn btn-info btn-sm commentbtn" data-id="{{this._id}}">Comments</button>
+      <button type="button" class="btn btn-danger btn-sm deletebtn" data-id="{{this._id}}">Delete</button>
     </div>
     </div>
     <hr/>   
@@ -68,4 +100,4 @@
     <p>Copyright@2017</p>
   </div>
 </footer>
-<script src="/assets/js/savenews.js"></script>
+<script src="/assets/js/app.js"></script>

@@ -9,6 +9,12 @@
 }
 .media{
   border:2px solid white;
+  margin-bottom:30px;
 }
 
+.btndiv{
+	position:relative;
+	top:30px;
+	float:right;
+}
 

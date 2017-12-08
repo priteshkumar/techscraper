@@ -1,93 +1,83 @@
-/* TODO:
 
-  1. Make a reusable function for creating a table body in index.html with the results from your MongoDB query
-  Each row should have info for one animal.
+$("button.commentbtn").on("click",showCommentsui);
+$("button.deletebtn").on("click",deleteNews);
 
-  2. Make two AJAX functions that fire when users click the two buttons on index.html.
-      a. When the user clicks the Weight button, the table should display the animal data sorted by weight.
-      b. When the user clicks the Name button, the table should display the animal data sorted by name.
-
-  Good luck!
-
-  *Hint*: We don't want to keep adding to the table with each button click. We only want to show the new results.
-  What can we do to the table to accomplish this?
-
-  *Bonus*: Write code to set an 'active' state on the column header. It should make the color sorted-by column red.
-  *Bonus*: Add additional ways to sort (e.g. by class or number of legs)
-*/
-
-// We'll be rewriting the table's data frequently, so let's make our code more DRY
-// by writing a function that takes in data (JSON) and creates a table body
-
-$("#weight-sort").on("click",getWeightdata);
-$("#name-sort").on("click",getNamedata);
   
+var currenTechnews = {techinfoid:null,comments:null};
+
+$('#commentsModal').on('show.bs.modal', function (event) {
+    
+      var modal = $(this);
+      var $commentlist = $(".modal-body #commentlist");
+      $(".modal-body #commentform").attr("data-id",currenTechnews.techinfoid); 
+      for(var i=0;i < currenTechnews.comments.length;i++){
+        console.log(currenTechnews.comments[i].body);
+        var $li = $("<li>");
+        var $p = $("<p>");
+        $p.text(currenTechnews.comments[i].body);
+        $li.append($p);
+        $commentlist.append($li);
+      }
 
 
-function displayResults(data,activecol) {
-  // Add to the table here...
-
-  var $tbody = $("tbody");
-  $tbody.empty();
-  
-  if(activecol === "name"){
-    $("#animal-name").addClass("active");
-    $("#animal-weight").removeClass("active");
-  }
-  else if(activecol === "weight"){
-    $("#animal-weight").addClass("active");
-    $("#animal-name").removeClass("active");
-  }
-  else {
-    $("th").removeClass("active");
-  }
-
-  for(var i=0;i < data.length;i++){
-    var $tr = $("<tr>");
-    var $name = $("<td>");
-    $name.text(data[i].name);
-    $tr.append($name);
-    var $numlegs = $("<td>");
-    $numlegs.text("4");
-    $tr.append($numlegs);
-    var $clss = $("<td>");
-    $clss.text("wildcreatures");
-    $tr.append($clss);
-    var $weight = $("<td>");
-    $weight.text(data[i].weight);
-    $tr.append($weight);
-    var $altname = $("<td>");
-    $altname.text("goodanimal");
-    $tr.append($altname);
-    $tbody.append($tr);
-  }
-
-
-}
-
-$.getJSON("/all", function(data) {
-  // Call our function to generate a table body
-  console.log(data);
-  displayResults(data,"default");
 });
 
 
 
-function getNamedata(){
-$.getJSON("/name", function(data) {
-  // Call our function to generate a table body
-  console.log(data);
-  displayResults(data,"name");
+$('#commentsModal').on('hide.bs.modal', function (event) {
+    
+  console.log("modal hiding completed");
+  var modal = $(this);
+            
+     var $commentlist = $('.modal-body #commentlist');
+     $commentlist.empty();
+    
 });
-}
 
 
-function getWeightdata(){
-  $.getJSON("/weight", function(data) {
-  // Call our function to generate a table body
-  console.log(data);
-  displayResults(data,"weight");
+
+
+$("#commentform").submit(function(event){
+  event.preventDefault();
+  var $newsid = $(this).attr("data-id");
+  var $comment = $("#commentform input[type=textarea]").val().trim();
+  console.log($newsid);
+  console.log($comment);
+  $.post("/api/comments",{techinfoid:$newsid,comments:$comment},function(data){
+    console.log(data);
   });
-}
 
+
+});
+
+
+
+function deleteNews(){
+  var $newsid = $(this).attr("data-id");
+    $.ajax({
+      method: "DELETE",
+      url: "/api/news/" + $newsid
+    })
+    .done(function() {
+      console.log("delete news done");
+      location.reload();
+    });
+  }
+
+
+
+
+function showCommentsui(){
+   console.log("called showcommentsui");
+   var $newsid = $(this).attr("data-id");
+   console.log($newsid);
+   $.get("/api/comments/" + $newsid, function(data) {
+    console.log(data);
+    currenTechnews.techinfoid = $newsid;
+    currenTechnews.comments = data;
+    $("#commentsModal").modal();
+  });    
+
+
+}
 
