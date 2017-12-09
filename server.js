@@ -21,10 +21,16 @@ app.set("view engine", "handlebars");
 app.use(express.static("public"));
 
 
+//var MONGOURI = "mongodb://heroku_8b2lj84v:ua9jmsq0ggs9ofj2r0r7q3gdc6@ds133776.mlab.com:33776/heroku_8b2lj84v";
+console.log("hello mongo");
+console.log(process.env.MONGODB_URI);
+var PORT = process.env.PORT || 3000;
+var MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1/tech'; 
+
 
 
 //todo change this later to MONGODB_URI for heroku
-var promise = mongoose.connect('mongodb://127.0.0.1/tech', {
+var promise = mongoose.connect(MONGODB_URI, {
   useMongoClient: true
 });
 
@@ -313,6 +319,6 @@ app.delete("/api/comments",function(req,req){
 
 
 // Set the app to listen on port 3000
-app.listen(3000, function() {
-  console.log("App running on port 3000!");
+app.listen(PORT, function() {
+  console.log("App running on port " + PORT);
 });
