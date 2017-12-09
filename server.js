@@ -24,7 +24,7 @@ app.use(express.static("public"));
 //var MONGOURI = "mongodb://heroku_8b2lj84v:ua9jmsq0ggs9ofj2r0r7q3gdc6@ds133776.mlab.com:33776/heroku_8b2lj84v";
 console.log("hello mongo");
 console.log(process.env.MONGODB_URI);
-var PORT = process.env.PORT || 3000;
+var PORT = process.env.PORT || 8080;
 var MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1/tech'; 
 
 
