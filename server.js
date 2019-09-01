@@ -25,7 +25,7 @@ app.use(express.static("public"));
 console.log("hello mongo");
 console.log(process.env.MONGODB_URI);
 var PORT = process.env.PORT || 3000;
-var MONGODB_URI = process.env.MONGODB_URI || 'mongodb://mongoadmin:casper34@localhost:3306/admin'; 
+var MONGODB_URI = process.env.MONGODB_URI || 'mongodb://mongoadmin:casper34@db:27017/admin'; 
 
 
 
