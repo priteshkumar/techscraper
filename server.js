@@ -24,8 +24,8 @@ app.use(express.static("public"));
 //var MONGOURI = "mongodb://heroku_8b2lj84v:ua9jmsq0ggs9ofj2r0r7q3gdc6@ds133776.mlab.com:33776/heroku_8b2lj84v";
 console.log("hello mongo");
 console.log(process.env.MONGODB_URI);
-var PORT = process.env.PORT || 8080;
-var MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1/tech'; 
+var PORT = process.env.PORT || 3000;
+var MONGODB_URI = process.env.MONGODB_URI || 'mongodb://mongoadmin:casper34@localhost:3306/admin'; 
 
 
 
@@ -38,6 +38,7 @@ mongoose.Promise = global.Promise;
 
 var db= null;
 promise.then(function(database){
+   console.log("got mongodb instance")
    db = database;
 });
 
@@ -102,22 +103,27 @@ function getNewsfromdb(res,scrapeUrl){
 
 
 function scrapeNews(url,res){
+  console.log("scrape news")
   request(url, function(error, response, html) {
 
   var $ = cheerio.load(html);
+  //console.log($.html());
   var newsitems = [];
-
+  console.log("parse techcrunch html");
   
-  $("li.river-block").each(function(i, element) {
-
+  $(".post-block").each(function(i, element) {
+    
+    console.log("process news item");
     var newsOb = {};
 
-    var url = $(element).attr("data-permalink");
+    var url = $(element).find("a.post-block__title__link").attr("href");
     if(url !== undefined){
       newsOb.url = url;
     }
     
-    var imgLink = $(element).find("a.thumb").find("img").attr("data-src");
+    console.log(url);
+    var imgLink = $(element).find(".post-block__media").find("img").attr("src");
+    console.log(imgLink)
     if(imgLink !== undefined){
       newsOb.imageUrl = imgLink.slice(0,imgLink.lastIndexOf("?"));
     }
@@ -125,8 +131,8 @@ function scrapeNews(url,res){
       newsOb.imageUrl = "https://images.pexels.com/photos/256381/pexels-photo-256381.jpeg";
     }
 
-    newsOb.title = $(element).find("h2.post-title").find("a").text();
-    var info = $(element).find("p.excerpt").text();
+    newsOb.title = $(element).find("a.post-block__title__link").text();
+    var info = $(element).find(".post-block__content").find("p").text();
     if(info !== undefined){
       newsOb.info = info;
     }
@@ -135,9 +141,9 @@ function scrapeNews(url,res){
     }
 
     newsOb.postedTime = $(element).find("time").attr("datetime");
-    newsOb.authorlink = "www.techcrunch.com" + $(element).find("div.byline").find("a").attr("href");
-    newsOb.authorName = $(element).find("div.byline").find("a").text();
-    
+    newsOb.authorlink = "www.techcrunch.com" + $(element).find("span.river-byline__authors").find("a").attr("href");
+    newsOb.authorName = $(element).find("span.river-byline__authors").find("a").text();
+    console.log(newsOb);
     //newsitems.push(newsOb);
     var techinfo = new Techinfo({
       _id:new mongoose.Types.ObjectId(),
@@ -154,7 +160,7 @@ function scrapeNews(url,res){
     newsOb.id = i;
     newsitems.push(newsOb);
     
-    /*
+   /* 
     techinfo.save(function(err){
       if(err) {
         console.log(err + "  technews saving failed");
@@ -163,11 +169,11 @@ function scrapeNews(url,res){
       else{
         console.log("technews saving completed");
       }
-    });*/
+    }); */
 
   });
 
-  //console.log(newsitems);
+  console.log(newsitems);
   res.render("index",{newsitems:newsitems});
 
 });
