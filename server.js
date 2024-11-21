@@ -30,7 +30,7 @@ var MONGODB_URI = process.env.MONGODB_URI || 'mongodb://mongoadmin:casper34@db:2
 
 
 //todo change this later to MONGODB_URI for heroku
-var promise = mongoose.connect(MONGODB_URI, {
+/*var promise = mongoose.connect(MONGODB_URI, {
   useMongoClient: true
 });
 
@@ -42,7 +42,7 @@ promise.then(function(database){
    db = database;
 });
 
-
+*/
 var Schema = mongoose.Schema;
 
 var technewSchema = new Schema({
