@@ -111,18 +111,18 @@ function scrapeNews(url,res){
   var newsitems = [];
   console.log("parse techcrunch html");
   
-  $(".post-block").each(function(i, element) {
+  $(".wp-block-post").each(function(i, element) {
     
     console.log("process news item");
     var newsOb = {};
 
-    var url = $(element).find("a.post-block__title__link").attr("href");
+    var url = $(element).find(".loop-card__title").find("a").attr("data-destinationlink");
     if(url !== undefined){
       newsOb.url = url;
     }
     
     console.log(url);
-    var imgLink = $(element).find(".post-block__media").find("img").attr("src");
+    var imgLink = $(element).find(".loop-card__figure").find("img").attr("src");
     console.log(imgLink)
     if(imgLink !== undefined){
       newsOb.imageUrl = imgLink.slice(0,imgLink.lastIndexOf("?"));
@@ -131,8 +131,8 @@ function scrapeNews(url,res){
       newsOb.imageUrl = "https://images.pexels.com/photos/256381/pexels-photo-256381.jpeg";
     }
 
-    newsOb.title = $(element).find("a.post-block__title__link").text();
-    var info = $(element).find(".post-block__content").find("p").text();
+    newsOb.title = $(element).find(".loop-card__cat").text();
+    var info = $(element).find(".loop-card__title").find("a").text();
     if(info !== undefined){
       newsOb.info = info;
     }
@@ -141,8 +141,8 @@ function scrapeNews(url,res){
     }
 
     newsOb.postedTime = $(element).find("time").attr("datetime");
-    newsOb.authorlink = "www.techcrunch.com" + $(element).find("span.river-byline__authors").find("a").attr("href");
-    newsOb.authorName = $(element).find("span.river-byline__authors").find("a").text();
+    newsOb.authorlink = "www.techcrunch.com" + $(element).find(".loop-card__author-list").find("a").attr("href");
+    newsOb.authorName = $(element).find(".loop-card__author-list").find("a").text();
     console.log(newsOb);
     //newsitems.push(newsOb);
     var techinfo = new Techinfo({
